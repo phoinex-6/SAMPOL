@@ -1,0 +1,467 @@
+{% load static %}
+<!DOCTYPE html>
+
+<html lang="en">
+	<!--HEADER-->
+	<head>
+	  <title>Automate Food Service</title>
+	  <meta charset="utf-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/r/bs-3.3.5/jq-2.1.4,dt-1.10.8/datatables.min.css"/> 
+      <script type="text/javascript" src="https://cdn.datatables.net/r/bs-3.3.5/jqc-1.11.3,dt-1.10.8/datatables.min.js"></script>   
+
+      <!--FOR FONT-->
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Trirong">
+
+      <!--Bootstrap for the buttons-->
+	 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	  <script>
+      $(document).ready(function (){
+       
+          $('#ExampleTable').DataTable()
+     });
+    </script>
+	  <!--Style sheet Layout-->
+	  <link rel="stylesheet" href="{% static 'styles.css' %}">
+	</head>
+	
+	<body>
+        <p style="text-align:center;">
+            <img src="{% static 'project/img/junimo5.png' %}" style="width:200px; height:200px;">
+        </p>
+        <!--Homebuttons-->
+		<div class="container">
+            <nav class="navbar navbar-dark bg-dark">
+                <form class="col text-center">
+                    <a href="../homepage">
+                        <button class="button" type="button">HOME</button>
+                        </a>
+                        <a href="../features">
+                        <button class="button" type="button">FEATURES</button>
+                         </a>
+                        <a href="../about">
+                        <button class="button" type="button">ABOUT US</button>
+                        </a>
+                        <a href="../contact">
+                        <button class="button" type="button">CONTACT US</button>
+                        </a>
+                        <!--a href="../signin">
+                            <button class="button" type="button">LOG IN</button>
+                        </a>
+                        <a href="../signup">
+                        <button class="button" type="button">SIGN UP</button>
+                      </a-->
+                      <a href="../dashboard">
+                        <button class="button" type="button">DASHBOARD</button>
+                    </a>
+                    <a href="../">
+                      <button class="button" type="button">LOGOUT</button>
+                  </a>
+                </form>
+              </nav>
+              <!--Enter Web data Here-->
+			  
+              <div class="container2" >
+                <form class="form-horizontal" role="form" method="post">
+                {% csrf_token %}
+                <p style="font-size: large; font-family: Trirong;">
+                    <div style = 'background-color:#6db33f;'>
+                        <center>
+                            <p >
+                                <h1 style="font-family: Trirong;">
+                                    ADMIN                 
+                                </h1>
+                            </p>
+                        </center>
+                    </div>
+                    <div>
+                        <p align = "right">
+                            <a type = "button" class = "btn btn-primary" id = "adminId" 
+                            href = "{% url 'signupView' %}">
+                            add Admin
+                            </a>
+                        </p>
+                    </div>
+                    <table style = 'text-align:center' class = "table table-primary table-striped" style = "width:100%">
+                        <thead>
+                        <tr >
+                          <th scope="col" style = 'text-align:center;'>Admin ID</th>
+                          <th scope="col" style = 'text-align:center;'>First Name</th>
+                          <th scope="col" style = 'text-align:center;'>Last Name</th>
+                          <th scope="col" style = 'text-align:center;'>User Name</th>
+                          <th scope="col" style = 'text-align:center;'>Password</th>
+                          <th scope="col" style = 'text-align:center;'>Action</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                            {% for a in admins %}
+                        <tr>
+                          <td>{{a.adminId}}</td>
+                          <td>{{a.Fname}}</td>
+                          <td>{{a.Lname}}</td>
+                          <td>{{a.Uname}}</td>
+                          <td>{{a.Pass}}</td>
+                          <td><a type="button" class="btn btn-primary" href="#" data-toggle="modal" data-target="#newModal-{{a.adminId}}">VIEW</a>
+
+                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{a.adminId}}">
+                              DELETE
+                            </button></td>
+                        </tr>
+                        <!-- Modal VIEW-->
+                  <div class="modal fade" id="newModal-{{a.adminId}}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header" style="background-color:#6db33f">
+                          <h5 class="modal-title", style="font-size: large; font-family: Trirong;">VIEW DETAILS</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form id="updateForm" method="post" >
+                        {% csrf_token %}
+                        <div class="modal-body">
+                          <input type="text" name="a-adminId" value = {{a.adminId}} hidden>
+                          <div class="row" text-align ="center">
+                            <div class="col-12" id="startup-tab-1">
+                                <div class = "row" >
+                                  <div class = "col-sm-4">
+                                    <input type="text" class="form-control" id="id-fname" placeholder="Firstname" name="a-firstname" value ={{a.Fname}}>
+                                  </div>
+                                  <div class = "row">
+                                  <div class = "col-sm-4">
+                                    <input type="text" class="form-control" id="id-lname" placeholder="LastName"  name="a-lastname" value ={{a.Lname}}>
+                                  </div>
+                                </div>
+                                <div class = "row"></div>
+                                  <div class = "col-sm-4">
+                                    <input type="text" class="form-control" id="id-user" placeholder="USername"  name="a-username" value ={{a.Uname}}>
+                                  </div>
+                                  <div class = "col-sm-4">
+                                    <input type="text" class="form-control" id="id-pass" placeholder="Password"  name="a-password" value ={{a.Pass}}>
+                                  </div>
+                                </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" id = "btnUpdate" name = "btnUpdate" class="btn btn-primary">UPDATE</button>                             
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>                          
+                        </div>
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+
+                  <!-- Modal DELETE-->
+                  <div class="modal fade" id="exampleModal-{{a.adminId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header" style="background-color:#6db33f">
+                          <h5 class="modal-title" id="exampleModalLabel">DELETE RECORD</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <form id="deleteForm" method="post" >
+                        {% csrf_token %} 
+                        <div class="modal-body">                       
+                          <input type="text" name="admin-adminId" value = {{a.adminId}} hidden>
+                          Are you sure you want to delete this record?
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                          <button type="submit" id = "btnDelete" name = "btnDelete" class="btn btn-primary">YES</button>
+                        </div>
+                      </div>
+                    </form>
+                    </div>
+                  </div>
+                {% endfor %}
+            </tbody>
+        </table>
+        <br>
+        <br><br>
+                  <div style = 'background-color:#6db33f;'>
+                        <center>
+                            <p>
+                                <h1 style="font-family: Trirong;">
+                                    FOOD
+                                </h1>
+                            </p>
+                        </center>
+                    </div>
+                    <div>
+                        <p align = "right">
+                            <a type = "button" class = "btn btn-primary" id = "foodId" 
+                            href = "{% url 'foodView' %}">
+                            add Food
+                            </a>
+                        </p>
+                    </div>
+                    <table style = 'text-align:center' class = "table table-primary table-striped" style = "width:100%">
+                        <thead>
+                        <tr >
+                          <th scope="col" style = 'text-align:center;'>Food ID</th>
+                          <th scope="col" style = 'text-align:center;'>Name</th>
+                          <th scope="col" style = 'text-align:center;'>Quantity</th>
+                          <th scope="col" style = 'text-align:center;'>Unit Price</th>
+                          <th scope="col" style = 'text-align:center;'>Action</th>
+                        </tr>
+                      </thead>
+                        <tbody>
+                            {% for f in foods %}
+                            <tr>
+                            <td>{{f.foodId}}</td>
+                            <td>{{f.Name}}</td>
+                            <td>{{f.Quantity}}</td>
+                            <td>{{f.unitPrice}}</td>
+                            <td><a type="button" class="btn btn-primary" href="#" data-toggle="modal" data-target="#newModal-{{f.foodId}}">VIEW</a>
+
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{f.foodId}}">
+                                DELETE
+                              </button></td>
+                          </tr>
+                          <!-- Modal VIEW-->
+                    <div class="modal fade" id="newModal-{{f.foodId}}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header" style="background-color:#6db33f">
+                            <h5 class="modal-title", style="font-size: large; font-family: Trirong;">VIEW DETAILS</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form id="updateForm" method="post" >
+                          {% csrf_token %}
+                          <div class="modal-body">
+                            <input type="text" name="f-foodId" value = {{f.foodId}} hidden>
+                            <div class="row" text-align ="center">
+                              <div class="col-12" id="startup-tab-1">
+                                  <div class = "row" ></div>
+                                    <div class = "col-sm-4">
+                                      <input type="text" class="form-control" id="id-name" placeholder="Name" name="f-Name" value ={{f.Name}}>
+                                    </div>
+
+                                    <div class = "row"></div>
+                                    <div class = "col-sm-4">
+                                      <input type="text" class="form-control" id="id-quantity" placeholder="Quantity"  name="f-Quantity" value ={{f.Quantity}}>
+                                    </div>
+
+                                    <div class = "row"></div>
+                                    <div class = "col-sm-4">
+                                      <input type="text" class="form-control" id="id-unit" placeholder="Unit"  name="f-Unit" value ={{f.unitPrice}}>
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>  
+                          <div class="modal-footer">
+                              <button type="submit" id = "btnUpdate" name = "btnUpdate" class="btn btn-primary">UPDATE</button>                             
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>                          
+                          </div>
+                        </div>
+                      </form>
+                      </div>
+                    </div>
+  
+                    <!-- Modal DELETE-->
+                    <div class="modal fade" id="exampleModal-{{f.foodId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header" style="background-color:#6db33f">
+                            <h5 class="modal-title" id="exampleModalLabel">DELETE RECORD</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form id="deleteForm" method="post" >
+                          {% csrf_token %} 
+                          <div class="modal-body">                       
+                            <input type="text" name="food-foodId" value = {{f.foodId}} hidden>
+                            Are you sure you want to delete this record?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                            <button type="submit" id = "btnDelete" name = "btnDelete" class="btn btn-primary">YES</button>
+                          </div>
+                        </div>
+                      </form>
+                      </div>
+                    </div>
+                  {% endfor %}
+              </tbody>
+          </table>
+                    <div style = 'background-color:#6db33f;'>
+                        <center>
+                            <p>
+                                <h1 style="font-family: Trirong;">
+                                    CUSTOMER
+                                </h1>
+                            </p>
+                        </center>
+                    </div>
+                    <div>
+                        <p align = "right">
+                            <a type = "button" class = "btn btn-primary" id = "customerId" 
+                            href = "{% url 'signinView' %}">
+                            add Customer
+                            </a>
+                        </p>
+                    </div>
+                    <table style = 'text-align:center' class = "table table-primary table-striped" style = "width:100%">
+                        <thead>
+                        <tr >
+                          <th scope="col" style = 'text-align:center;'>Customer ID</th>
+                          <th scope="col" style = 'text-align:center;'>Phone Number</th>
+                          <th scope="col" style = 'text-align:center;'>First Name</th>
+                          <th scope="col" style = 'text-align:center;'>Last Name</th>
+                          <th scope="col" style = 'text-align:center;'>Food</th>
+                          <th scope="col" style = 'text-align:center;'>Action</th>
+                          
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for c in customers %}
+                        <tr>
+                            <td>{{c.customerId}}</td>
+                            <td>{{c.phoneNum}}</td>
+                            <td>{{c.Fname}}</td>
+                            <td>{{c.Lname}}</td>
+                            <td>{{c.food.Name}}</td>
+                            <td><a type="button" class="btn btn-primary" href="#" data-toggle="modal" data-target="#newModal-{{c.customerId}}">VIEW</a>
+
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{c.customerId}}">
+                                DELETE
+                              </button></td>
+                          </tr>
+                          <!-- Modal VIEW-->
+                    <div class="modal fade" id="newModal-{{c.customerId}}" tabindex="-1" role="dialog" aria-labelledby="newModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header" style="background-color:#6db33f">
+                            <h5 class="modal-title", style="font-size: large; font-family: Trirong;">VIEW DETAILS</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form id="updateForm" method="post" >
+                          {% csrf_token %}
+                          <div class="modal-body">
+                            <input type="text" name="c-customerId" value = {{c.customerId}} hidden>
+                            <div class="row" text-align ="center">
+                              <div class="col-12" id="startup-tab-1">
+                                  <div class = "row" >
+                                    <div class = "col-sm-4">
+                                      <input type="text" class="form-control" id="id-phone" placeholder="phonenum" name="c-phoneNum" value ={{c.phoneNum}}>
+                                    </div>
+                                    <div class = "row">
+                                    <div class = "col-sm-4">
+                                      <input type="text" class="form-control" id="id-fname" placeholder="Firstname"  name="c-fisrtname" value ={{c.Fname}}>
+                                    </div>
+                                  </div>
+                                  <div class = "row"></div>
+                                    <div class = "col-sm-4">
+                                      <input type="text" class="form-control" id="id-lname" placeholder="Lastname"  name="c-lastname" value ={{c.Lname}}>
+                                    </div>
+                                    <div class = "col-sm-4">
+                                      <input type="text" class="form-control" id="id-food" placeholder="Food"  name="c-food.Name" value ={{c.food.Name}}>
+                                    </div>
+                                  </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                              <button type="submit" id = "btnUpdate" name = "btnUpdate" class="btn btn-primary">UPDATE</button>                             
+                              <button type="button" class="btn btn-secondary" data-dismiss="modal">CLOSE</button>                          
+                          </div>
+                        </div>
+                      </form>
+                      </div>
+                    </div>
+  
+                    <!-- Modal DELETE-->
+                    <div class="modal fade" id="exampleModal-{{c.customerId}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header" style="background-color:#6db33f">
+                            <h5 class="modal-title" id="exampleModalLabel">DELETE RECORD</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <form id="deleteForm" method="post" >
+                          {% csrf_token %} 
+                          <div class="modal-body">                       
+                            <input type="text" name="customer-customerId" value = {{c.customerId}} hidden>
+                            Are you sure you want to delete this record?
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">NO</button>
+                            <button type="submit" id = "btnDelete" name = "btnDelete" class="btn btn-primary">YES</button>
+                          </div>
+                        </div>
+                      </form>
+                      </div>
+                    </div>
+                  {% endfor %}
+              </tbody>
+          </table>
+          <br>
+          <br><br>
+                    <div style = 'background-color:#6db33f;'>
+                        <center>
+                            <p>
+                                <h1 style="font-family: Trirong;">
+                                    MENU
+                                </h1>
+                            </p>
+                        </center>
+                    </div>
+                    <div>
+                      
+                    </div>
+                    <table style = 'text-align:center' class = "table table-primary table-striped" style = "width:100%">
+                        <thead>
+                        <tr >
+                          <th scope="col" style = 'text-align:center;'>Menu ID</th>
+                          <th scope="col" style = 'text-align:center;'>Customer</th>
+                          <th scope="col" style = 'text-align:center;'>Number</th>
+                          <th scope="col" style = 'text-align:center;'>Food </th>
+                          <th scope="col" style = 'text-align:center;'>Price </th>
+                          <th scope="col" style = 'text-align:center;'>Action</th>
+                          <!--th scope="col">Food ID</th-->
+
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {% for m in menus %}
+                          <tr>
+                            <td>{{m.menuId}}</td>
+                            <td>{{m.customer.Fname}}</td>
+                            <td>{{m.customer.phoneNum}}</td>
+                            <td>{{m.food.Name}}</td>
+                            <td>{{m.food.unitPrice}}</td>
+                            <td><a type="button" class="btn btn-primary" href="#" data-toggle="modal" data-target="#newModal-{{f.foodId}}">VIEW</a>
+
+                              <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal-{{f.foodId}}">
+                                      DELETE
+                             </button></td>
+                           </tr>
+                        {% endfor %}
+                    </tbody>
+          </table>
+          <br>
+          <br><br>
+		</div>
+		<!--FOOTER-->
+		<footer>
+			<p style="text-align:center; color:white;">RIEL JASPER ABANGAN, HANNAH MHAE LAQUINON CSIT327 G2-C1 AY 2021 - 2022</p>
+		</footer>
+		
+	
+	
+	</body>
+    
+
+</html>
